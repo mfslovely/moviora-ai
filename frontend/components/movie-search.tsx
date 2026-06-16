@@ -1,16 +1,17 @@
 ﻿"use client";
 
-import { FormEvent, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { Loader2, Search } from "lucide-react";
 import { MovieCard } from "@/components/movie-card";
 import type { Movie } from "@/lib/movies";
 
 export function MovieSearch({ movies }: { movies: Movie[] }) {
   const [query, setQuery] = useState("");
-  const router = useRouter();
+  const [results, setResults] = useState<Movie[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const filteredMovies = useMemo(() => {
+  const localFilteredMovies = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
     if (!normalizedQuery) {
@@ -23,7 +24,8 @@ export function MovieSearch({ movies }: { movies: Movie[] }) {
         movie.year,
         movie.overview,
         movie.audienceSignal,
-        ...movie.genres
+        ...movie.genres,
+        ...movie.cast
       ]
         .join(" ")
         .toLowerCase();
@@ -32,18 +34,66 @@ export function MovieSearch({ movies }: { movies: Movie[] }) {
     });
   }, [movies, query]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const visibleMovies = query.trim() ? results ?? localFilteredMovies : movies;
 
-    const normalizedQuery = query.trim().toLowerCase();
-    if (!normalizedQuery) {
+  useEffect(() => {
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      setResults(null);
+      setError("");
+      setIsLoading(false);
       return;
     }
 
-    const exactMovie = movies.find((movie) => movie.title.toLowerCase() === normalizedQuery);
-    if (exactMovie) {
-      router.push(`/movie/${exactMovie.id}`);
+    if (trimmedQuery.length < 2) {
+      setResults(null);
+      setError("");
+      return;
     }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(async () => {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch(`/api/movies/search?query=${encodeURIComponent(trimmedQuery)}`, {
+          signal: controller.signal
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error ?? "Movie search failed");
+        }
+
+        setResults(data);
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        setResults([]);
+        setError(error instanceof Error ? error.message : "Movie search failed");
+      } finally {
+        setIsLoading(false);
+      }
+    }, 450);
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [query]);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+  }
+
+  function clearSearch() {
+    setQuery("");
+    setResults(null);
+    setError("");
   }
 
   return (
@@ -57,10 +107,15 @@ export function MovieSearch({ movies }: { movies: Movie[] }) {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           className="min-w-0 flex-1 bg-transparent px-1 py-3 text-white outline-none placeholder:text-white/38"
-          placeholder="Search Interstellar, Dune, K3G..."
+          placeholder="Search Titanic, Avatar, 3 Idiots..."
         />
-        <button className="rounded bg-ember px-5 py-3 font-medium text-white transition hover:bg-orange-600">
-          Analyze
+        <button
+          type="submit"
+          className="flex items-center gap-2 rounded bg-ember px-5 py-3 font-medium text-white transition hover:bg-orange-600"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className="animate-spin" size={17} /> : null}
+          Search
         </button>
       </form>
 
@@ -68,31 +123,33 @@ export function MovieSearch({ movies }: { movies: Movie[] }) {
         <div className="mt-6 max-w-2xl rounded-md border border-white/10 bg-ink/84 p-4 backdrop-blur-xl">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <p className="text-sm text-white/48">Search results</p>
+              <p className="text-sm text-white/48">Live OMDb results</p>
               <h2 className="text-xl font-semibold">
-                {filteredMovies.length ? `${filteredMovies.length} match found` : "No local match yet"}
+                {isLoading ? "Searching..." : visibleMovies.length ? `${visibleMovies.length} match found` : "No match found"}
               </h2>
             </div>
             <button
               type="button"
-              onClick={() => setQuery("")}
+              onClick={clearSearch}
               className="rounded border border-white/10 px-3 py-2 text-sm text-white/62 hover:text-white"
             >
               Clear
             </button>
           </div>
 
-          {filteredMovies.length ? (
+          {error ? <p className="mb-4 rounded border border-ember/30 bg-ember/10 p-3 text-sm text-white/74">{error}</p> : null}
+
+          {visibleMovies.length ? (
             <div className="grid gap-4 sm:grid-cols-2">
-              {filteredMovies.map((movie) => (
+              {visibleMovies.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
             </div>
-          ) : (
+          ) : !isLoading ? (
             <p className="leading-7 text-white/64">
-              This demo library has a few sample films. Next we can connect TMDb search so any movie name works live.
+              Try another title. OMDb works best with exact names like Titanic, Avatar, Inception, 3 Idiots, or The Dark Knight.
             </p>
-          )}
+          ) : null}
         </div>
       ) : null}
     </>

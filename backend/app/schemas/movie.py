@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+﻿from pydantic import BaseModel
 
 
 class Sentiment(BaseModel):
@@ -14,6 +14,7 @@ class Movie(BaseModel):
     rating: str
     runtime: str
     genres: list[str]
+    cast: list[str] = []
     poster: str
     backdrop: str
     overview: str

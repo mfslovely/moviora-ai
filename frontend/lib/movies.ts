@@ -1,10 +1,11 @@
-﻿export type Movie = {
+export type Movie = {
   id: string;
   title: string;
   year: string;
   rating: string;
   runtime: string;
   genres: string[];
+  cast: string[];
   poster: string;
   backdrop: string;
   overview: string;
@@ -24,6 +25,7 @@ export const movies: Movie[] = [
     rating: "8.7",
     runtime: "2h 49m",
     genres: ["Sci-Fi", "Drama", "Adventure"],
+    cast: ["Matthew McConaughey as Cooper", "Anne Hathaway as Brand", "Jessica Chastain as Murph"],
     poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
     backdrop: "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
     overview:
@@ -39,6 +41,7 @@ export const movies: Movie[] = [
     rating: "8.5",
     runtime: "2h 47m",
     genres: ["Sci-Fi", "Epic", "Action"],
+    cast: ["Timothee Chalamet as Paul Atreides", "Zendaya as Chani", "Rebecca Ferguson as Lady Jessica"],
     poster: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
     backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
     overview:
@@ -54,6 +57,7 @@ export const movies: Movie[] = [
     rating: "7.9",
     runtime: "1h 56m",
     genres: ["Sci-Fi", "Mystery", "Drama"],
+    cast: ["Amy Adams as Louise Banks", "Jeremy Renner as Ian Donnelly", "Forest Whitaker as Colonel Weber"],
     poster: "https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg",
     backdrop: "https://image.tmdb.org/t/p/original/yIZ1xendyqKvY3FGeeUYUd5X9Mm.jpg",
     overview:
@@ -69,7 +73,8 @@ export const movies: Movie[] = [
     rating: "7.4",
     runtime: "3h 30m",
     genres: ["Drama", "Family", "Romance"],
-    poster: "https://image.tmdb.org/t/p/w500/3MDeMfmZWs4S65G8rD4R0w0gM7n.jpg",
+    cast: ["Shah Rukh Khan as Rahul", "Kajol as Anjali", "Amitabh Bachchan as Yash", "Hrithik Roshan as Rohan", "Kareena Kapoor as Poo"],
+    poster: "https://m.media-amazon.com/images/M/MV5BN2MyZGVhNmMtY2JkNy00ZmIzLTkwOGItY2NiM2MyOGMxODkzXkEyXkFqcGc@._V1_SX300.jpg",
     backdrop: "https://image.tmdb.org/t/p/original/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg",
     overview:
       "A wealthy family is divided by love, pride, and tradition when the elder son marries against his father's wishes.",

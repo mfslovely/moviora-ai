@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import type { Movie } from "@/lib/movies";
+import { PosterImage } from "@/components/poster-image";
 
 export function MovieCard({ movie }: { movie: Movie }) {
   return (
@@ -10,10 +10,9 @@ export function MovieCard({ movie }: { movie: Movie }) {
       className="group overflow-hidden rounded-md border border-white/10 bg-white/[0.045] transition hover:-translate-y-1 hover:border-ember/50 hover:bg-white/[0.07]"
     >
       <div className="relative aspect-[2/3] overflow-hidden">
-        <Image
+        <PosterImage
           src={movie.poster}
           alt={`${movie.title} poster`}
-          fill
           sizes="(max-width: 768px) 50vw, 25vw"
           className="object-cover transition duration-500 group-hover:scale-105"
         />
@@ -40,3 +39,5 @@ export function MovieCard({ movie }: { movie: Movie }) {
     </Link>
   );
 }
+
+

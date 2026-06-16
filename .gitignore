@@ -1,4 +1,4 @@
-# Dependencies
+﻿# Dependencies
 node_modules/
 .venv/
 venv/
@@ -12,7 +12,10 @@ build/
 
 # Local environment
 .env
-.env.local
+.env.*
+!.env.example
+!frontend/.env.example
+!backend/.env.example
 .chroma/
 
 # Editors and OS
