@@ -1,7 +1,5 @@
 # Moviora AI
 
-# Moviora AI
-
 Moviora AI is an AI-powered movie intelligence platform that combines movie discovery, review analysis, personalized recommendations, and Retrieval-Augmented Generation (RAG) to deliver contextual movie insights and conversational experiences.
 
 Built with Next.js, FastAPI, PostgreSQL, and modern LLM technologies, the platform demonstrates production-grade AI application architecture, API design, and full-stack development practices.
