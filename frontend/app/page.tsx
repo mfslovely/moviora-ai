@@ -1,5 +1,6 @@
-import { Bot, BrainCircuit, Search, Sparkles, TrendingUp } from "lucide-react";
+﻿import { Bot, BrainCircuit, Sparkles, TrendingUp } from "lucide-react";
 import { MovieCard } from "@/components/movie-card";
+import { MovieSearch } from "@/components/movie-search";
 import { Navigation } from "@/components/navigation";
 import { assistantPrompts, movies } from "@/lib/movies";
 
@@ -28,16 +29,7 @@ export default function Home() {
               Search films, analyze audience reviews, ask grounded questions, and get explainable
               recommendations from a movie knowledge base.
             </p>
-            <div className="mt-8 flex max-w-2xl items-center gap-3 rounded-md border border-white/12 bg-ink/78 p-2 shadow-glow">
-              <Search className="ml-3 text-white/45" size={22} />
-              <input
-                className="min-w-0 flex-1 bg-transparent px-1 py-3 text-white outline-none placeholder:text-white/38"
-                placeholder="Search Interstellar, Dune, Arrival..."
-              />
-              <button className="rounded bg-ember px-5 py-3 font-medium text-white transition hover:bg-orange-600">
-                Analyze
-              </button>
-            </div>
+            <MovieSearch movies={movies} />
             <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
               {[
                 ["14K", "review chunks"],
@@ -91,3 +83,5 @@ export default function Home() {
     </main>
   );
 }
+
+

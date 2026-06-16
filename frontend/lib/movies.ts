@@ -1,4 +1,4 @@
-export type Movie = {
+﻿export type Movie = {
   id: string;
   title: string;
   year: string;
@@ -61,6 +61,21 @@ export const movies: Movie[] = [
     audienceSignal:
       "People love its quiet tone, language-first premise, and emotionally precise ending.",
     sentiment: { positive: 76, neutral: 17, negative: 7 }
+  },
+  {
+    id: "kabhi-khushi-kabhie-gham",
+    title: "Kabhi Khushi Kabhie Gham",
+    year: "2001",
+    rating: "7.4",
+    runtime: "3h 30m",
+    genres: ["Drama", "Family", "Romance"],
+    poster: "https://image.tmdb.org/t/p/w500/3MDeMfmZWs4S65G8rD4R0w0gM7n.jpg",
+    backdrop: "https://image.tmdb.org/t/p/original/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg",
+    overview:
+      "A wealthy family is divided by love, pride, and tradition when the elder son marries against his father's wishes.",
+    audienceSignal:
+      "Viewers remember the family emotion, music, scale, iconic performances, and nostalgic rewatch value.",
+    sentiment: { positive: 78, neutral: 14, negative: 8 }
   }
 ];
 
@@ -70,3 +85,5 @@ export const assistantPrompts = [
   "What did audiences dislike about Dune: Part Two?",
   "Find movies about time, grief, and sacrifice."
 ];
+
+
